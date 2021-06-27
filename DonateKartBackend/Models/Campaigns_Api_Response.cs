@@ -7,17 +7,7 @@ using System.Threading.Tasks;
 namespace DonateKartBackend.Models
 {
 
-
-
     public class Campaigns_Api_Response
-    {
-        public string title { get; set; }
-        public double totalAmount { get; set; }
-        public double backersCount { get; set; }
-        public DateTime endDate { get; set; }
-
-    }
-    public class Campaigns_Api_Response2
     {
         public string code { get; set; }
         public string title { get; set; }

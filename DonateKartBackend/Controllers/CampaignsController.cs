@@ -30,8 +30,7 @@ namespace DonateKartBackend.Controllers
                         StreamReader reader = new StreamReader(responseStream);
                         string text = reader.ReadToEnd();
                         var resp = JsonConvert.DeserializeObject<List<Campaigns_Api_Response>>(text);
-                        // var resp = JsonConvert.DeserializeObject<List<Tuple<(string title, DateTime endDate, double totalAmount, double backersCount)>>> (text);
-                        return new OkObjectResult(resp.OrderByDescending(c => c.totalAmount));
+                        return new OkObjectResult(resp.Select(c=>new { c.backersCount, c.title ,c.totalAmount, c.endDate}).ToList().OrderByDescending(c => c.totalAmount));
                     }
                     else
                         return new BadRequestObjectResult("Call to api failed");
@@ -61,7 +60,7 @@ namespace DonateKartBackend.Controllers
                         var responseStream = await response1.Content.ReadAsStreamAsync();
                         StreamReader reader = new StreamReader(responseStream);
                         string text = reader.ReadToEnd();
-                        var resp = JsonConvert.DeserializeObject<List<Campaigns_Api_Response2>>(text);
+                        var resp = JsonConvert.DeserializeObject<List<Campaigns_Api_Response>>(text);
                         if (type == "active")
                             resp = resp.Where(c => c.endDate >= DateTime.UtcNow && c.created != null && ((DateTime.UtcNow  - c.created )?.TotalDays ?? 0) <= 30).ToList();
                         else if (type == "closed")
